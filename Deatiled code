@@ -1,0 +1,457 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage{fontawesome}
+
+% This is a helpful package that puts math inside length specifications
+\usepackage{calc}
+\usepackage{soul}
+
+% Simpler bibsection for CV sections
+% (thanks to natbib for inspiration)
+\makeatletter
+\newlength{\bibhang}
+\setlength{\bibhang}{1em}
+\newlength{\bibsep}
+ {\@listi \global\bibsep\itemsep \global\advance\bibsep by\parsep}
+\newenvironment{bibsection}%
+        {\begin{list}{}{%
+       \setlength{\leftmargin}{\bibhang}%
+       \setlength{\itemindent}{-\leftmargin}%
+       \setlength{\itemsep}{\bibsep}%
+       \setlength{\parsep}{\z@}%
+        \setlength{\partopsep}{0pt}%
+        \setlength{\topsep}{0pt}}}
+        {\end{list}\vspace{-.6\baselineskip}}
+\makeatother
+
+% Layout:\ \ Puts the section titles on left side of page
+\reversemarginpar
+
+%
+%         PAPER SIZE, PAGE NUMBER, AND DOCUMENT LAYOUT NOTES:    
+%
+% The next \usepackage line changes the layout for CV style section
+% headings as marginal notes. It also sets up the paper size as either
+% letter or A4. By default, letter was used. If A4 paper is desired,
+% comment out the letterpaper lines and uncomment the a4paper lines.
+%
+% As you can see, the margin widths and section title widths can be
+% easily adjusted.
+%
+% ALSO:\ \ Notice that the includefoot option can be commented OUT in order
+% to put the PAGE NUMBER *IN* the bottom margin. This will make the
+% effective text area larger.
+%
+% IF YOU WISH TO REMOVE THE ``of LASTPAGE'' next to each page number,
+% see the note about the +LP and -LP lines below. Comment out the +LP
+% and uncomment the -LP.
+%
+% IF YOU WISH TO REMOVE PAGE NUMBERS, be sure that the includefoot line
+% is uncommented and ALSO uncomment the \pagestyle{empty} a few lines
+% below.
+%
+
+%% Use these lines for letter-sized paper
+\usepackage[paper=letterpaper,
+            %includefoot, % Uncomment to put page number above margin
+            marginparwidth=1.2in,     % Length of section titles
+            marginparsep=.05in,       % Space between titles and text
+            margin=.5in,               % 1 inch margins
+            includemp]{geometry}
+
+%% Use these lines for A4-sized paper
+%\usepackage[paper=a4paper,
+%            %includefoot, % Uncomment to put page number above margin
+%            marginparwidth=30.5mm,    % Length of section titles
+%            marginparsep=1.5mm,       % Space between titles and text
+%            margin=25mm,              % 25mm margins
+%            includemp]{geometry}
+
+%% More layout:\ \ Get rid of indenting throughout entire document
+\setlength{\parindent}{0in}
+
+\usepackage[shortlabels]{enumitem}
+
+%% Reference the last page in the page number
+%
+% NOTE:\ \ comment the +LP line and uncomment the -LP line to have page
+%       numbers without the ``of ##'' last page reference)
+%
+% NOTE:\ \ uncomment the \pagestyle{empty} line to get rid of all page
+%       numbers (make sure includefoot is commented out above)
+%
+\usepackage{fancyhdr,lastpage}
+\pagestyle{fancy}
+\pagestyle{empty}      % Uncomment this to get rid of page numbers
+\fancyhf{}\renewcommand{\headrulewidth}{0pt}
+\fancyfootoffset{\marginparsep+\marginparwidth}
+\newlength{\footpageshift}
+\setlength{\footpageshift}
+          {0.5\textwidth+0.5\marginparsep+0.5\marginparwidth-2in}
+\lfoot{\hspace{\footpageshift}%
+       \parbox{4in}{\, \hfill %
+                    \arabic{page} of \protect\pageref*{LastPage} % +LP
+%                    \arabic{page}                               % -LP
+                    \hfill \,}}
+
+% Finally, give us PDF bookmarks
+\usepackage{color,hyperref}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.5}
+\hypersetup{colorlinks,breaklinks, urlcolor=darkblue}
+
+%%%%%%%%%%%%%%%%%%%%%%%% End Document Setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Helper Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% The title (name) with a horizontal rule under it
+% (optional argument typesets an object right-justified across from name
+%  as well)
+%
+% Usage:\ \ \makeheading{name}
+%        OR
+%        \makeheading[right_object]{name}
+%
+% Place at top of document. It should be the first thing.
+% If ``right_object'' is provided in the square-braced optional
+% argument, it will be right justified on the same line as ``name'' at
+% the top of the CV. For example:    
+%
+%       \makeheading[\emph{Curriculum vitae}]{Your Name}
+%
+% will put an emphasized ``Curriculum vitae'' at the top of the document
+% as a title. Likewise, a picture could be included:    
+%
+%   \makeheading[\includegraphics[height=1.5in]{my_picutre}]{Your Name}
+%
+% the picture will be flush right across from the name.
+\newcommand{\makeheading}[2][]%
+        {\hspace*{-\marginparsep minus \marginparwidth}%
+         \begin{minipage}[t]{\textwidth+\marginparwidth+\marginparsep}%
+             {\large \bfseries #2 \hfill #1}\\[-0.15\baselineskip]%
+                 \rule{\columnwidth}{1pt}%
+         \end{minipage}}
+
+% The section headings
+%
+% Usage:\ \ \section{section name}
+\renewcommand{\section}[1]{\pagebreak[3]%
+    \hyphenpenalty=10000%
+    \vspace{1.3\baselineskip}%
+    \phantomsection\addcontentsline{toc}{section}{#1}%
+    \noindent\llap{\scshape\smash{\parbox[t]{\marginparwidth}{\raggedright #1}}}%
+    \vspace{-\baselineskip}\par}
+
+% An itemize-style list with lots of space between items
+\newenvironment{outerlist}[1][\enskip\textbullet]%
+        {\begin{itemize}[#1,leftmargin=*]}{\end{itemize}%
+         \vspace{-.6\baselineskip}}
+
+% An environment IDENTICAL to outerlist that has better pre-list spacing
+% when used as the first thing in a \section
+\newenvironment{lonelist}[1][\enskip\textbullet]%
+        {\begin{list}{#1}{%
+        \setlength{\partopsep}{0pt}%
+        \setlength{\topsep}{0pt}}}
+        {\end{list}\vspace{-.6\baselineskip}}
+
+% An itemize-style list with little space between items
+\newenvironment{innerlist}[1][\enskip\textbullet]%
+        {\begin{itemize}[#1,leftmargin=*,parsep=0pt,itemsep=0pt,topsep=0pt,partopsep=0pt]}
+        {\end{itemize}}
+
+% An environment IDENTICAL to innerlist that has better pre-list spacing
+% when used as the first thing in a \section
+\newenvironment{loneinnerlist}[1][\enskip\textbullet]%
+        {\begin{itemize}[#1,leftmargin=*,parsep=0pt,itemsep=0pt,topsep=0pt,partopsep=0pt]}
+        {\end{itemize}\vspace{-.6\baselineskip}}
+
+% To add some paragraph space between lines.
+% This also tells LaTeX to preferably break a page on one of these gaps
+% if there is a needed pagebreak nearby.
+\newcommand{\blankline}{\quad\pagebreak[3]}
+\newcommand{\halfblankline}{\quad\vspace{-0.5\baselineskip}\pagebreak[3]}
+
+% Uses hyperref to link DOI
+\newcommand\doilink[1]{\href{http:    //dx.doi.org/#1}{#1}}
+\newcommand\doi[1]{doi:    \doilink{#1}}
+
+% For \url{SOME_URL}, links SOME_URL to the url SOME_URL
+\providecommand*\url[1]{\href{#1}{#1}}
+% Same as above, but pretty-prints SOME_URL in teletype fixed-width font
+\renewcommand*\url[1]{\href{#1}{\texttt{#1}}}
+
+% For \email{ADDRESS}, links ADDRESS to the url mailto:    ADDRESS
+\providecommand*\email[1]{\href{mailto:    #1}{#1}}
+% Same as above, but pretty-prints ADDRESS in teletype fixed-width font
+%\renewcommand*\email[1]{\href{mailto:    #1}{\texttt{#1}}}
+
+%\providecommand\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+%    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+%\providecommand\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+%    \TeX}}
+\providecommand\BibTeX{{B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    \TeX}}
+\providecommand\Matlab{\textsc{Matlab}}
+
+%%%%%%%%%%%%%%%%%%%%%%%% End Helper Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\makeheading[\Large{Curriculum Vit\ae}]{\Large{Debaleena Goswami}}
+
+\section{Current Address}
+
+%
+\newlength{\rcollength}\setlength{\rcollength}{2.7in}%
+%
+\begin{tabular}[t]{@{}p{\textwidth-\rcollength}p{\rcollength}}
+142-A, F-Block, &
+\faPhone \space +91-8638489514 \\
+Sector 14,
+& \faEnvelope \space \email{debaleena.goswami@iimu.ac.in}\\
+Udaipur-313001, Rajasthan & \faGithub \space \href{https://github.com/debalee101}{github.com/debalee101}
+\end{tabular}
+\blankline
+
+\section{Personal Information}
+
+\begin{tabular}[t]{@{}p{\textwidth-\rcollength}p{\rcollength}}
+Date of Birth: 04 Sept, 1996\\
+Nationality: Indian \\
+\end{tabular}
+
+\blankline
+
+\section{Education}
+\begin{loneinnerlist}[]
+\item[] Graduate \hfill \emph{Aug 2020}
+\begin{innerlist}[]
+\item[] \emph{\href{http://www.tezu.ernet.in/}{Tezpur Uniersity, Tezpur}}
+\item[] Master of Commerce, CGPA: 7.44/10.00
+\item[] \emph{Specialization in Banking and Finance} 
+\end{innerlist}
+\item[] Undergraduate \hfill \emph{June 2018}
+\begin{innerlist}[]
+\item[] \emph{\href{http://www.tezu.ernet.in/dmbbt/}{Tezpur University, Tezpur}}
+\item[] Bachelor of Commerce (Hons), CGPA: 7.45/10.00
+\item[] \emph{Specialization in Accounting and Taxation}
+\end{innerlist}
+\end{loneinnerlist}
+\blankline
+
+\section{Research Experience}
+\begin{loneinnerlist}[]
+\item[]
+\textbf{Research Assistant} \hfill \emph{Sep 2021 - present}
+\\
+\textit{\href{https://www.iimu.ac.in/}{Indian Institute of Management Udaipur}}\\
+\textit{Udaipur, India}
+\item[] Assisting {\href{https://www.iimu.ac.in/faculty-aamp-research/faculty/full-time-faculty/moumita-tiwari}{Prof. Moumita Tiwari}}, {\href{https://www.iimu.ac.in/faculty-aamp-research/faculty/full-time-faculty/bhavya-singhvi}{Prof. Bhavya Singhvi}} and {\href{https://www.iimu.ac.in/faculty-aamp-research/faculty/full-time-faculty/bhavya-singhvi}{Prof. Sandhya Bhatia}} in the Finance and Accounting area with their ongoing projects
+{\begin{innerlist}
+\item[1.] ``\textit{Product market competition and stock price synchronicity}''
+%\item[] Working at the idea-development stage
+\item[2.] ``\textit{Effect of fee-related regulatory changes on the performance of mutual funds}''
+\item[] Contributed to literature review, data collection and analysis using $\mathtt{Stata}$
+\item[3.] ``\textit{Professional skepticism and levers of control}''
+\item[] Ongoing: Manuscript preparation in progress\\
+\end{innerlist}}
+
+\item[]
+\textbf{Research Scholar} \hfill \emph{Oct 2020 - Aug 2021}
+\\
+\textit{\href{https://www.iift.ac.in/iift/index.php}{Indian Institute of Foreign Trade}}\\
+\textit{New Delhi, India}
+\item[] Completed one-year PhD-level coursework, divided over two semesters (with specialized papers on Finance and IT Innovation and Technology Management)\\
+\item[] 
+\textbf{Research Intern} \hfill \emph{Dec 2019 - Jan 2020} \\
+\textit{\href{https://www.iift.ac.in/iift/index.php}{Indian Institute of Foreign Trade}}\\
+\textit{Kolkata, India}
+\item[] Under the guidance of \href{https://tedu.iift.ac.in/iift/faculty-detail.php?pro=pvGYqOg1HrUwNWOZxbYeEXVjRzBWWVJaeWpZRi9MeWNxNExIQ3c9PQ==}{Prof. Dr. Jayanta Kr. Seal} in the area of Mutual Funds, emphasizing current trends and developments in robo-advising for portfolio selection and management \\
+
+\item[] 
+\textbf{Summer Intern} \hfill \emph{Jun 2019 - Jul 2019} \\
+\textit{\href{https://marico.com/}{Marico India Ltd.}}\\
+\textit{Guwahati, India}
+{\begin{innerlist}
+\item[1.] ``\textit{Ensuring compliance with the company's commercial policies and manuals: A step-wise procedural activity with enhanced effectiveness.}''
+\item[] This project involved an in-depth study and analysis of the terms of the company's commercial policies and manuals, following which we conceptualized, created and effectuated a web-based quiz with an MS Excel framework.
+\item[2.] ``\textit{Standardization of financial reports generated within the plants operating in the same region and under one Factory Commercial Manager.}''
+\item[] In this project, we facilitated uniformity in the internal financial reporting formats by updating the reporting structure in MS Excel. Additionally, we arranged the previously generated reports of the same financial year for the reference of Commercial Heads of the plants.
+\end{innerlist}}
+\end{loneinnerlist}
+\blankline
+\pagebreak
+
+
+\section{Analytical and Software Skills}
+\begin{loneinnerlist}[]
+\item[] \emph{Statistical Analysis} 
+\begin{innerlist}[]
+\item[] \ \ Data analysis and visualization using $\mathtt{Stata}$ and $\mathtt{R}$
+\item[] \ \ Proficient in using $\mathtt{Microsoft\ Excel,\ SPSS}$ and $\mathtt{SPSS\ Amos}$ for data analysis
+\item[] \ \ Time series data analysis using $\mathtt{EViews}$\\
+
+\end{innerlist}
+\item[] \emph{General} 
+\begin{innerlist}[]
+\item[] \ \ Excellent command of \LaTeX\ and $\mathtt{Microsoft\ Office\ suite}$; Smart survey with $\mathtt{SurveyCTO}$\\
+\end{innerlist}
+\item[] \emph{Financial Data Analysis}
+\begin{innerlist}[]
+\item[] \ \ \href{https://www.coursera.org/account/accomplishments/verify/299PJBWH9CWR}{Portfolio Diversification using Correlation Matrix}, \href{https://www.coursera.org/account/accomplishments/verify/HGAWW9CEQ8KT}{Seeking Investment Alpha}\\
+\end{innerlist}
+\item[] \emph{Illustrations and Miscellaneous Skills} 
+\begin{innerlist}[]
+\item[] \ \ Proficient in $\mathtt{Adobe\ Photoshop}$, and $\mathtt{Procreate}$.
+\end{innerlist}
+\end{loneinnerlist}
+\blankline
+
+\section{Workshops Attended}
+\begin{loneinnerlist} []
+
+
+\item[] \textbf{Data Science Summer School 2022} \hfill \emph{July 2022 - August 2022}
+\begin{innerlist}
+\item[] \textit{Organized by {\href{https://www.hertie-school.org/en/datasciencelab}{Hertie School Data Science Lab}}}
+\end{innerlist}
+\blankline
+
+\item[] \textbf{Doing Applied Research} \hfill \emph{August 2022}
+\begin{innerlist}
+\item[] \textit{Organized by {\href{https://www.scunning.com/mixtape.html}{Prof. Scott Cunningham, Baylor University}}}
+\item[] Instructed by \href{https://www.dmarkanderson.com/}{Prof. D. Mark Anderson}, \href{https://www.montana.edu/}{Montana State University} and \href{https://danielrees.weebly.com/}{Prof. Daniel Rees}, \href{https://www.uc3m.es/Home}{Universidad Carlos III de Madrid}
+\end{innerlist}
+\blankline
+\item[] \textbf{Causal Inference - I \& II} \hfill \emph{June 2022 - August 2022}
+\begin{innerlist}
+\item[] \textit{Organized and instructed by {\href{https://www.scunning.com/mixtape.html}{Prof. Scott Cunningham, Baylor University}}}
+\end{innerlist}
+\blankline
+\item[] \textbf{Journal of Management Studies} \emph{Virtual Idea Development Workshop} \hfill \emph{June 2022}
+\begin{innerlist}
+\item[] Hosted by \href{https://www.iimu.ac.in/}{Indian Institute of Management Udaipur} \emph{and}  \href{https://www.nottingham.edu.cn/en/business/home.aspx}{Nottingham University Business School China} 
+\item[] Abstract presentation: ``\textit{The impact of climate risk performance on FDI inflows: international evidence}''\\
+\end{innerlist}
+
+\item[] \textbf{Instrumental variables} \hfill \emph{Apr 2022}
+\begin{innerlist}
+\item[] \textit{Organized by {\href{https://www.scunning.com/mixtape.html}{Prof. Scott Cunningham, Baylor University}}}
+\item[] Instructed by {\href{https://about.peterhull.net/}{Prof. Peter Hull}}
+\end{innerlist}
+\blankline
+\item[] \textbf{Communicating research results in articles and presentations}\hfill \emph{Mar 2022 - Apr 2022}
+\begin{loneinnerlist}
+\item[] \textit{Indian Institute of Management Udaipur}
+\item[] Instructed by {\href{https://www.iimu.ac.in/faculty-aamp-research/faculty/full-time-faculty/elizabeth-l-rose}{Prof. Elizabeth L. Rose}}
+\end{loneinnerlist}
+\blankline
+\item[] \textbf{From ideas to published articles:} \hfill \emph{Feb 2022 - Mar 2022}
+\item[] \textbf{Understanding the publication process}
+\begin{innerlist}
+\item[] \textit{Indian Institute of Management Udaipur}
+\item[] Instructed by {\href{https://www.iimu.ac.in/faculty-aamp-research/faculty/full-time-faculty/elizabeth-l-rose}{Prof. Elizabeth L. Rose}}
+\end{innerlist}
+\blankline
+\end{loneinnerlist}
+
+
+\section{Additional Courses and Certifications}
+
+\begin{loneinnerlist}[]
+\item[] \textbf{Empirical Market Micro-structure} (PhD-level seminar course)
+\begin{innerlist}
+\item[] \textit{Indian Institute of Management Udaipur}\\
+\end{innerlist}
+
+\item[] \textbf{Econometric Methods - I \& II} (PhD level course)
+\begin{innerlist}
+\item[] \textit{Indian Institute of Management Udaipur}\\
+\end{innerlist}
+
+\item[] \textbf{Introductory Course In Real Analysis} (Ongoing)
+\begin{innerlist}
+    \item[] \textit{Indian Institute of Technology, Kharagpur}
+\end{innerlist}
+\blankline
+
+\item[] \textbf{Introduction to Sustainable Finance}
+\begin{innerlist}
+\item[] \textit{\href{https://unccelearn.org/}{United Nations Institute for Training and Research (UNITAR)}}
+\end{innerlist}
+\end{loneinnerlist}
+\blankline
+
+\section{Paper Presentations}
+\begin{loneinnerlist}[]
+\item[] \emph{ICSSR sponsored international seminar on ``Environmental Degradation and Sustainable Development: Local+Regional+Global''}
+\item[] \href{http://www.gossaigaoncollege.org/departments-and-centres/department-of-economics/}{Department of Economics, Gossaigaon College, Assam} (3-5 Feb, 2020)
+\begin{innerlist}[]
+\item[] Title: ``\textit{Impact of eco-tourism (wetland conservation) on sustainable development: A case study of Deepor Beel in Guwahati, Assam}''\\
+\end{innerlist}
+\item[] \emph{2nd International Conference on Information Systems \& Management Science (ISMS) 2019}
+\item[] \href{https://www.tripurauniv.ac.in/}{Department of Information Technology, Tripura University}, Tripura
+\begin{innerlist} []
+\item[] Title: ``\textit{Infusion of E-HRM: A study in the context of International Business}''
+\end{innerlist}
+\end{loneinnerlist}
+\blankline
+
+\section{Other Projects}
+\begin{loneinnerlist}[]
+\item[] \textit{Strengthening of internal controls: A case study of the commercial department, Marico India Ltd}
+\item[] Research Advisor: \href{http://www.tezu.ernet.in/dcom/profile.php?user_details_id=15}{Dhritabrata Jyoti Bharadwaz}\\
+Affiliation: \emph{\href{http://www.tezu.ernet.in/dcom/}{Department of Commerce, Tezpur University}}
+\begin{innerlist}[]
+\item[]
+This study encompasses:
+\begin{innerlist}
+\item[i.] An attempt to evaluate the existing measures of ensuring compliance with company policy terms and to examine newer methods for better compliance.
+\item[ii.] To propose standardized formats of preparing and presenting financial reports among multiple plants reporting the same head.
+\item[iii.] A review of the commercial hygiene process followed within the company\\
+\end{innerlist}
+\end{innerlist} 
+\item[] \textit{Assessing the preparedness of different parties to implement GST during June 2017}
+\item[] Research Advisor: \href{http://www.tezu.ernet.in/dba/new/subhrangshu_sekhar_sarkar_profile.php}{Prof. Dr Subhrangshu Sekhar Sarkar}\\
+Affiliation: \emph{\href{http://www.tezu.ernet.in/dba/new/}{Department of Business Administration, Tezpur University}}
+\begin{innerlist}[]
+\item[]
+A survey-based study undertaken at various locations in Assam, India, assessing the level of preparedness of consumers, suppliers, tax authorities and tax consultants for complying with the upcoming tax regime: \textit{Goods and Services Tax (GST)} in India commencing on July 1st, 2017. \\~\\
+\end{innerlist}
+\end{loneinnerlist}
+
+\section{Referees}
+\begin{loneinnerlist}[]
+\item[] {\href{https://www.iimu.ac.in/faculty-aamp-research/faculty/full-time-faculty/moumita-tiwari}{Moumita Tiwari}}
+\begin{innerlist}[]
+\item[] \textit{Email}: moumita.tiwari@iimu.ac.in
+\item[] Finance and Accounting, \emph{\href{https://www.iimu.ac.in/}{Indian Institute of Management Udaipur}},
+\textit{Rajasthan India}\\
+\end{innerlist}
+
+\item[] {\href{https://www.iimu.ac.in/faculty-aamp-research/faculty/full-time-faculty/bhavya-singhvi}{Bhavya Singhvi}}
+\begin{innerlist}[]
+\item[] \textit{Email}:
+bhavya.singhvi@iimu.ac.in
+\item[] Finance and Accounting, \emph{\href{https://www.iimu.ac.in/}{Indian Institute of Management Udaipur}},
+\textit{Rajasthan India}\\
+\end{innerlist}
+
+
+\item[] \href{http://www.tezu.ernet.in/dcom/profile.php?user_details_id=11}{Santi Gopal Maji}
+\begin{innerlist}[]
+\item[] \textit{Email}:  sgmaji@tezu.ernet.in
+\item[] Department of Commerce, \emph{\href{/http://www.tezu.ernet.in/}{Tezpur University, Tezpur}} 
+\end{innerlist}
+\end{loneinnerlist}
+\blankline
+
+\section{Achievements and other Professional Activities}
+\begin{loneinnerlist}[]
+\item[] Volunteered at the \href{https://eaamo.org/}{ACM conference on Equity and Access in Algorithms, Mechanisms, and Optimization (EAAMO'22)}\\
+\item[] Part of the editorial team at \href{https://www.exploring-economics.org/en/}{Exploring Economics}, an e-learning platform on pluralist economics\\
+\item[] Qualified the \emph{National Eligibility Test(NET)} held by the \emph{University Grants Commission, India} for Assistant Professorship in Commerce
+\end{loneinnerlist}
+\blankline
+
+
+\end{document}
